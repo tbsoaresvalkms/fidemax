@@ -1,0 +1,74 @@
+<div>
+    <h2 id="page-heading">
+        <span>Redemption Transactions</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-redemption-transaction" [routerLink]="['/redemption-transaction/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span >
+            Create new Redemption Transaction
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="table-responsive" *ngIf="redemptionTransactions">
+        <table class="table table-striped">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
+            <th jhiSortBy="id"><span>ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="date"><span>Date</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="balance"><span>Balance</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="itemProductId"><span>Item Product</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="portfolioId"><span>Portfolio</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="companyId"><span>Company</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
+            <tr *ngFor="let redemptionTransaction of redemptionTransactions ;trackBy: trackId">
+                <td><a [routerLink]="['/redemption-transaction', redemptionTransaction.id, 'view' ]">{{redemptionTransaction.id}}</a></td>
+                <td>{{redemptionTransaction.date | date:'mediumDate'}}</td>
+                <td>{{redemptionTransaction.balance}}</td>
+                <td>
+                    <div *ngIf="redemptionTransaction.itemProductId">
+                        <a [routerLink]="['../item-product', redemptionTransaction.itemProductId , 'view' ]" >{{redemptionTransaction.itemProductId}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="redemptionTransaction.portfolioId">
+                        <a [routerLink]="['../portfolio', redemptionTransaction.portfolioId , 'view' ]" >{{redemptionTransaction.portfolioId}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="redemptionTransaction.companyId">
+                        <a [routerLink]="['../company', redemptionTransaction.companyId , 'view' ]" >{{redemptionTransaction.companyId}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['/redemption-transaction', redemptionTransaction.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/redemption-transaction', redemptionTransaction.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'redemption-transaction/'+ redemptionTransaction.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

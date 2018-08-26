@@ -1,0 +1,45 @@
+{
+    "name": "ItemProduct",
+    "fields": [
+        {
+            "fieldName": "count",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "min",
+                "required"
+            ],
+            "fieldValidateRulesMin": 0
+        },
+        {
+            "fieldName": "unitPrice",
+            "fieldType": "BigDecimal"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipValidateRules": "required",
+            "relationshipName": "product",
+            "otherEntityName": "product",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "itemProduct"
+        },
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "redemptionTransaction",
+            "otherEntityName": "redemptionTransaction",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "itemProduct"
+        }
+    ],
+    "changelogDate": "20180826142336",
+    "entityTableName": "item_product",
+    "dto": "mapstruct",
+    "pagination": "infinite-scroll",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": true,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

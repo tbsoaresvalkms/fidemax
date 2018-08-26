@@ -1,0 +1,46 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="customer">
+            <h2><span>Customer</span> {{customer.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span>Cpf</span></dt>
+                <dd>
+                    <span>{{customer.cpf}}</span>
+                </dd>
+                <dt><span>Image</span></dt>
+                <dd>
+                    <div *ngIf="customer.image">
+                        <a (click)="openFile(customer.imageContentType, customer.image)">
+                            <img [src]="'data:' + customer.imageContentType + ';base64,' + customer.image" style="max-width: 100%;" alt="customer image"/>
+                        </a>
+                        {{customer.imageContentType}}, {{byteSize(customer.image)}}
+                    </div>
+                </dd>
+                <dt><span>Portfolio</span></dt>
+                <dd>
+                    <div *ngIf="customer.portfolioId">
+                        <a [routerLink]="['/portfolio', customer.portfolioId, 'view']">{{customer.portfolioId}}</a>
+                    </div>
+                </dd>
+                <dt><span>User</span></dt>
+                <dd>
+                    {{customer.userId}}
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/customer', customer.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

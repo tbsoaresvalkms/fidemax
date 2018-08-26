@@ -1,0 +1,92 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-redemption-transaction-heading">Create or edit a Redemption Transaction</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!redemptionTransaction.id">
+                    <label for="id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="redemptionTransaction.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_date">Date</label>
+                    <div class="input-group">
+                        <input id="field_date" type="text" class="form-control" name="date" ngbDatepicker  #dateDp="ngbDatepicker" [(ngModel)]="redemptionTransaction.date"
+                        />
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-secondary" (click)="dateDp.toggle()"><fa-icon [icon]="'calendar-alt'"></fa-icon></button>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_balance">Balance</label>
+                    <input type="number" class="form-control" name="balance" id="field_balance"
+                        [(ngModel)]="redemptionTransaction.balance" required min="0" jhiMin="0"/>
+                    <div [hidden]="!(editForm.controls.balance?.dirty && editForm.controls.balance?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.balance?.errors?.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.controls.balance?.errors?.min">
+                            This field should be at least 0.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.controls.balance?.errors?.number">
+                            This field should be a number.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_itemProduct">Item Product</label>
+                    <select class="form-control" id="field_itemProduct" name="itemProduct" [(ngModel)]="redemptionTransaction.itemProductId" required>
+                        <option *ngIf="!editForm.value.itemProduct" [ngValue]="null" selected></option>
+                        <option [ngValue]="itemProductOption.id" *ngFor="let itemProductOption of itemproducts; trackBy: trackItemProductById">{{itemProductOption.id}}</option>
+                    </select>
+                </div>
+                <div [hidden]="!(editForm.controls.itemProduct?.dirty && editForm.controls.itemProduct?.invalid)">
+                    <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.itemProduct?.errors?.required">
+                        This field is required.
+                    </small>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_portfolio">Portfolio</label>
+                    <select class="form-control" id="field_portfolio" name="portfolio" [(ngModel)]="redemptionTransaction.portfolioId"  required>
+                        <option *ngIf="!editForm.value.portfolio" [ngValue]="null" selected></option>
+                        <option [ngValue]="portfolioOption.id" *ngFor="let portfolioOption of portfolios; trackBy: trackPortfolioById">{{portfolioOption.id}}</option>
+                    </select>
+                </div>
+                <div [hidden]="!(editForm.controls.portfolio?.dirty && editForm.controls.portfolio?.invalid)">
+                    <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.portfolio?.errors?.required">
+                        This field is required.
+                    </small>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_company">Company</label>
+                    <select class="form-control" id="field_company" name="company" [(ngModel)]="redemptionTransaction.companyId"  required>
+                        <option *ngIf="!editForm.value.company" [ngValue]="null" selected></option>
+                        <option [ngValue]="companyOption.id" *ngFor="let companyOption of companies; trackBy: trackCompanyById">{{companyOption.id}}</option>
+                    </select>
+                </div>
+                <div [hidden]="!(editForm.controls.company?.dirty && editForm.controls.company?.invalid)">
+                    <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.company?.errors?.required">
+                        This field is required.
+                    </small>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span>Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

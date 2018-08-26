@@ -1,0 +1,71 @@
+entity Customer {
+	cpf String required pattern(/^[0-9]{11}$/),
+    image ImageBlob
+}
+
+entity Portfolio {
+	balance BigDecimal required min(0)
+}
+
+entity Company {
+	name String required,
+	cnpj String required
+}
+
+entity Employee {
+    office Office
+}
+
+enum Office{
+	MANAGER, 
+    SUPPORT
+}
+
+entity ConsumerTransaction {
+	date LocalDate,
+	balance BigDecimal min(0) required
+}
+
+entity RedemptionTransaction {
+	date LocalDate
+	balance BigDecimal min(0) required
+}
+
+entity ItemProduct {
+	count Integer min(0) required,
+    unitPrice BigDecimal
+}
+
+entity Price {
+	date LocalDate
+    unitPrice BigDecimal
+}
+
+entity Product {
+	name String required,
+    description String required,
+    image ImageBlob
+}
+
+relationship OneToOne {
+	Customer{portfolio required} to Portfolio{customer required},
+    RedemptionTransaction{itemProduct required} to ItemProduct{redemptionTransaction},
+    ConsumerTransaction{employee required} to Employee{consumerTransaction},
+    ItemProduct{product required} to Product,
+    Employee{user required} to User,
+    Customer{user required} to User
+}
+
+relationship OneToMany {
+	Portfolio{consumerTransaction} to ConsumerTransaction{portfolio required},
+	Portfolio{redemptionTransaction} to RedemptionTransaction{portfolio required},
+    Company{consumerTransaction} to ConsumerTransaction{company required},
+	Company{redemptionTransaction} to RedemptionTransaction{company required},
+	Company{employee} to Employee{company required},
+    Product{price required} to Price
+}
+
+filter *
+paginate * with infinite-scroll
+dto * with mapstruct
+service * with serviceImpl
